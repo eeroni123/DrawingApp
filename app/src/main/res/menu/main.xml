@@ -2,54 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <item
-        android:id="@+id/action_clear"
-        android:title="Clear"
-        android:orderInCategory="300"
-        android:icon="@drawable/ic_action_clear"
-        android:layout_alignParentEnd="true"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_undo"
-        android:title="Undo"
+        android:id="@+id/action_save"
+        android:layout_gravity="right"
+        android:icon="@drawable/ic_baseline_save_24px"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_action_undo"
-        android:layout_gravity="right"
+        android:title="Save Image"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_redo"
-        android:title="Redo"
-        android:orderInCategory="200"
-        android:icon="@drawable/ic_action_redo"
+        android:id="@+id/background_color"
         android:layout_gravity="right"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/undo"
-        app:showAsAction="never"
-        android:title="Undo" />
-    <item
-        android:id="@+id/redo"
-        app:showAsAction="never"
-        android:title="Redo" />
-    <item
-        android:id="@+id/color_palette"
-        app:showAsAction="never"
-        android:title="Color Palette" />
-    <item
-        android:id="@+id/brush_size"
-        app:showAsAction="never"
-        android:title="Brush size" />
-    <item
-        android:id="@+id/erase"
-        app:showAsAction="never"
-        android:title="Erase" />
-    <item
-        android:id="@+id/clear"
-        app:showAsAction="never"
-        android:title="Clear" />
-    <item
-        android:id="@+id/share"
-        app:showAsAction="never"
-        android:title="Share Drawing" />
+        android:orderInCategory="800"
+        android:title="Change Background Color"
+        app:showAsAction="never" />
 
 </menu>

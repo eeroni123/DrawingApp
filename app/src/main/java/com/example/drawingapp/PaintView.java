@@ -9,6 +9,12 @@ import android.graphics.EmbossMaskFilter;
 import android.graphics.MaskFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.VectorDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -30,11 +36,13 @@ public class PaintView extends View {
     private ArrayList<FingerPath> paths = new ArrayList<>();
     private ArrayList<FingerPath> undonePaths = new ArrayList<>();
     private int currentColor;
+    private int lastColor;
     private int backgroundColor = DEFAULT_BG_COLOR;
     private int strokeWidth;
     private int lastStrokeWidth;
     private boolean emboss;
     private boolean blur;
+    private boolean erase = false;
     private MaskFilter mEmboss;
     private MaskFilter mBlur;
     private Bitmap mBitmap;
@@ -73,16 +81,25 @@ public class PaintView extends View {
         lastStrokeWidth = BRUSH_SIZE;
     }
 
-    public void normal(){
+    public void normal() {
         currentColor = DEFAULT_COLOR;
-        strokeWidth = BRUSH_SIZE;
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void erase() {
-        currentColor = backgroundColor;
-        emboss = false;
-        blur = false;
+        VectorDrawable vd = (VectorDrawable) getResources().getDrawable(R.drawable.ic_eraser_variant);
+        if (erase) {
+            erase = false;
+            vd.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+            currentColor = lastColor;
+        } else {
+            erase = true;
+            vd.setColorFilter(Color.parseColor("#66ccff"), PorterDuff.Mode.SRC_IN);
+            lastColor = currentColor;
+            currentColor = backgroundColor;
+        }
+        setBackground(vd);
     }
 
     public void clear() {
@@ -108,21 +125,44 @@ public class PaintView extends View {
 
     }
 
+    public Bitmap getBitmap()
+    {
+        this.setDrawingCacheEnabled(true);
+        this.buildDrawingCache();
+        Bitmap bmp = Bitmap.createBitmap(this.getDrawingCache());
+        this.setDrawingCacheEnabled(false);
+        return bmp;
+    }
+
     public void setCurrentColor(int currentColor) {
         this.currentColor = currentColor;
     }
+
+    public void changeBGColor(int currentBGColor) {
+        this.backgroundColor = currentBGColor;
+        paths.clear();
+        invalidate();
+    }
+
     public void setBrushSize(int newSize) {
         strokeWidth = newSize;
     }
 
-    public void setLastBrushSize(int lastSize){
-        lastStrokeWidth=lastSize;
+    public void setLastBrushSize(int lastSize) {
+        lastStrokeWidth = lastSize;
     }
 
-    public float getLastBrushSize(){
+    public float getLastBrushSize() {
         return lastStrokeWidth;
     }
 
+    public int getCurrentColor() {
+        return currentColor;
+    }
+
+    public boolean isErase() {
+        return erase;
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {

@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">DrawingApp</string>
-    <string name="label_brush_size">Size: </string>
+    <string name="label_brush_size"></string>
 </resources>
